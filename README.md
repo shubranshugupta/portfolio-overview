@@ -5,10 +5,20 @@ This project is a React application set up with Vite that supports Module Federa
 ## Project Structure
 
 ```
-vite-react-microfrontend
+portfolio-overview
 ├── src
 │   ├── components
-│   │   └── ExposedComponent.tsx
+│   │   ├── context
+│   │   │   └── QuickSearchContext.tsx
+│   │   ├── holdingTable
+│   │   │   ├── HoldingToolbar.tsx
+│   │   │   └── PortfolioHoldingTable.tsx
+│   │   ├── pnl
+│   │   │   ├── PnLPerTrade.tsx
+│   │   │   └── PnLSummary.tsx
+│   │   └── RiskChart.tsx
+│   ├── data
+│   │   └── mockData.tsx
 │   ├── App.tsx
 │   ├── main.tsx
 │   └── vite-env.d.ts
@@ -25,7 +35,7 @@ vite-react-microfrontend
 1. **Clone the repository:**
    ```bash
    git clone <repository-url>
-   cd vite-react-microfrontend
+   cd portfolio-overview
    ```
 
 2. **Install dependencies:**
@@ -43,7 +53,7 @@ vite-react-microfrontend
 
 ## Usage
 
-The `ExposedComponent` is a simple React component that has been exposed for use in a microfrontend architecture. You can import and use this component in other applications that support Module Federation.
+The `App` is a simple React component that has been exposed for use in a microfrontend architecture. You can import and use this component in other applications that support Module Federation.
 
 ## Microfrontend Architecture
 
