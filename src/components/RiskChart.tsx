@@ -96,7 +96,7 @@ const RiskChart: React.FC<RiskChartProps> = ({ holdings }) => {
     const chartData: ChartData[] = exposure === 'sector' ? sectorSummaryResult : assetSummaryResult;
 
     return (
-        <Paper elevation={3} sx={{ padding: 2 }}>
+        <Paper elevation={3} sx={{ padding: 2, width: '100%' }}>
             <Stack direction="row" spacing={2} sx={{ justifyContent: 'center', alignItems: 'center' }}>
                 <PieChartRounded color="primary" sx={{ fontSize: 40 }} />
                 <Typography variant="h5" gutterBottom>
@@ -119,7 +119,7 @@ const RiskChart: React.FC<RiskChartProps> = ({ holdings }) => {
                         value={exposure}
                         onChange={(event) => setExposure(event.target.value as 'sector' | 'asset')}
                         label="Exposure Type"
-                        sx={{ minWidth: 150, textAlign: 'left' }}
+                        sx={{ minWidth: 120, textAlign: 'left' }}
                     >
                         <MenuItem value="sector">Sector</MenuItem>
                         <MenuItem value="asset">Asset</MenuItem>

@@ -7,6 +7,7 @@ import {
     CssBaseline,
     ThemeProvider,
     createTheme,
+    Stack,
 } from '@mui/material';
 import { Brightness4Rounded, Brightness7Rounded } from '@mui/icons-material';
 
@@ -52,17 +53,19 @@ function App() {
                     </Grid>
 
                     <QuickSearchProvider>
-                        <Grid container spacing={{ xs: 2, md: 3 }} sx={{ padding: 1 }}>
+                        <Grid container spacing={{ xs: 2, md: 3 }}>
                             <Grid size={{ xs: 12, md: 12 }}>
                                 <PortfolioHoldingsTable holdings={enrichedHoldings} />
                             </Grid>
                             <Grid size={{ xs: 12, md: 6 }}>
-                                <PnLSummary holdings={enrichedHoldings}/>
-                                <br />
-                                <RiskChart holdings={enrichedHoldings}/>
+                                <Stack direction="column" spacing={2}
+                                    sx={{ justifyContent: 'center', alignItems: 'center' }}>
+                                    <PnLSummary holdings={enrichedHoldings} mode={mode} />
+                                    <RiskChart holdings={enrichedHoldings} />
+                                </Stack>
                             </Grid>
-                            <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex', justifyContent: 'center' }}>
-                                <PnLPerTrade holdings={enrichedHoldings} />
+                            <Grid size={{ xs: 12, md: 6 }}>
+                                <PnLPerTrade holdings={enrichedHoldings} mode={mode} />
                             </Grid>
                         </Grid>
                     </QuickSearchProvider>
