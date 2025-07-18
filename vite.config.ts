@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [
     react(),
     federation({
-      name: 'my-mfe',
+      name: 'portfolio-overview',
       filename: 'remoteEntry.js',
       exposes: {
         './App': './src/App.tsx',
