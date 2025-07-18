@@ -19,10 +19,12 @@ import { useQuickSearch } from '../context/QuickSearchContext';
 
 interface PnLPerTradeProps {
     holdings: EnrichedHolding[];
+    mode: boolean;
 }
 
 const PnLPerTrade: React.FC<PnLPerTradeProps> = ({
-    holdings
+    holdings,
+    mode
 }) => {
     const [page, setPage] = useState(1);
     const cardsPerPage = 2;
@@ -110,6 +112,10 @@ const PnLPerTrade: React.FC<PnLPerTradeProps> = ({
                         const gainPercent = ((gain / invested) * 100).toFixed(1);
                         const isProfit = gain >= 0;
 
+                        const badgeBgColor = mode
+                            ? (isProfit ? "#66bb6a3f" : "#d040363f")
+                            : (isProfit ? "#e8f5e9" : "#ffebee");
+
                         return (
                             <Card
                                 key={h.id}
@@ -119,7 +125,7 @@ const PnLPerTrade: React.FC<PnLPerTradeProps> = ({
                                     py: 2,
                                     borderRadius: 2,
                                     boxShadow: 1,
-                                    borderRight: `3px solid ${isProfit ? "#c8e6c9" : "#ffcdd2"}`,
+                                    borderRight: `3px solid ${badgeBgColor}`,
                                 }}
                             >
                                 <Typography variant="subtitle1" fontWeight={600}>
@@ -167,7 +173,7 @@ const PnLPerTrade: React.FC<PnLPerTradeProps> = ({
                                             px: 3,
                                             py: 1,
                                             borderRadius: "30px",
-                                            backgroundColor: isProfit ? "#e8f5e9" : "#ffebee",
+                                            backgroundColor: badgeBgColor,
                                             border: `2px solid ${isProfit ? "green" : "red"}`,
                                             boxShadow: 2,
                                         }}

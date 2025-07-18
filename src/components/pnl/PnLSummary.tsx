@@ -6,17 +6,21 @@ import { EnrichedHolding } from "../../data/mockData";
 
 interface PnLSummaryProps {
     holdings: EnrichedHolding[];
+    mode: boolean;
 }
 
-const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
+const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings, mode }) => {
     const invested = holdings.reduce((sum, h) => sum + h.avgBuyPrice * h.quantity, 0);
     const current = holdings.reduce((sum, h) => sum + h.currentPrice * h.quantity, 0);
     const gain = current - invested;
     const gainPercent = invested === 0 ? 0 : ((gain / invested) * 100);
     const isProfit = gain >= 0;
+    const badgeBgColor = mode
+        ? (isProfit ? "#66bb6a3f" : "#d040363f")
+        : (isProfit ? "#e8f5e9" : "#ffebee");
 
     return (
-        <Paper elevation={3} sx={{ padding: 2 }}>
+        <Paper elevation={3} sx={{ padding: 2, width: '100%' }}>
             <Stack direction="row" spacing={2} sx={{ justifyContent: 'center', alignItems: 'center' }}>
                 <ShowChartRounded color="primary" sx={{ fontSize: 40 }} />
                 <Typography variant="h5" gutterBottom>
@@ -67,7 +71,7 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
                         px: 3,
                         py: 1.2,
                         borderRadius: "30px",
-                        backgroundColor: isProfit ? "#e8f5e9" : "#ffebee",
+                        backgroundColor: badgeBgColor,
                         border: `2px solid ${isProfit ? "green" : "red"}`,
                         minWidth: "140px",
                         boxShadow: 2,
