@@ -5,7 +5,12 @@ import {
     ColumnsPanelTrigger,
     FilterPanelTrigger,
     ExportCsv,
-    ExportPrint
+    ExportPrint,
+    QuickFilter,
+    QuickFilterControl,
+    QuickFilterClear,
+    QuickFilterTrigger,
+    useGridApiContext
 } from '@mui/x-data-grid';
 import {
     TextField,
@@ -15,21 +20,65 @@ import {
     Badge,
     Menu,
     MenuItem,
-    IconButton
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
-import { useQuickSearch } from '../context/QuickSearchContext';
+type OwnerState = {
+    expanded: boolean;
+};
+
+const StyledQuickFilter = styled(QuickFilter)({
+    display: 'grid',
+    alignItems: 'center'
+});
+
+const StyledToolbarButton = styled(ToolbarButton)<{ ownerState: OwnerState }>(
+    ({ theme, ownerState }) => ({
+        gridArea: '1 / 1',
+        width: 'min-content',
+        height: 'min-content',
+        zIndex: 1,
+        opacity: ownerState.expanded ? 0 : 1,
+        pointerEvents: ownerState.expanded ? 'none' : 'auto',
+        transition: theme.transitions.create(['opacity']),
+    }),
+);
+
+const StyledTextField = styled(TextField)<{
+    ownerState: OwnerState;
+}>(({ theme, ownerState }) => ({
+    gridArea: '1 / 1',
+    overflowX: 'clip',
+    width: ownerState.expanded ? 260 : 'var(--trigger-width)',
+    opacity: ownerState.expanded ? 1 : 0,
+    transition: theme.transitions.create(['width', 'opacity']),
+}));
 
 const HoldingToolbar: React.FC = () => {
     const [exportMenuOpen, setExportMenuOpen] = React.useState(false);
     const exportMenuTriggerRef = React.useRef<HTMLButtonElement>(null);
 
-    const { searchValue, setSearchValue } = useQuickSearch();
+    const [expanded, setExpanded] = React.useState(false);
+    const apiRef = useGridApiContext();
+
+    React.useEffect(() => {
+        const rootElement = apiRef.current.rootElementRef.current;
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
+                event.preventDefault();
+                setExpanded(true);
+            }
+        };
+
+        rootElement?.addEventListener('keydown', handleKeyDown);
+        return () => rootElement?.removeEventListener('keydown', handleKeyDown);
+    }, [apiRef]);
 
     return (
         <Toolbar>
@@ -93,36 +142,57 @@ const HoldingToolbar: React.FC = () => {
 
             <Divider orientation="vertical" variant="middle" flexItem sx={{ mx: 0.5 }} />
 
-            <TextField
-                value={searchValue}
-                onChange={(e) => {
-                    setSearchValue(e.target.value);
-                }}
-                sx={{ width: 260 }}
-                aria-label="Search"
-                placeholder="Search..."
-                size="small"
-                slotProps={{
-                    input: {
-                        startAdornment: (
-                            <InputAdornment position="start">
+            <StyledQuickFilter expanded={expanded} onExpandedChange={setExpanded}>
+                <QuickFilterTrigger
+                    render={(triggerProps) => (
+                        <Tooltip title="Search" enterDelay={0}>
+                            <StyledToolbarButton
+                                {...triggerProps}
+                                ownerState={{ expanded }}
+                                color="default"
+                                disabled={expanded}
+                            >
                                 <SearchIcon fontSize="small" />
-                            </InputAdornment>
-                        ),
-                        endAdornment: searchValue ? (
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="Clear search"
-                                    sx={{ marginRight: -0.75 }}
-                                    onClick={(e) => setSearchValue("")}
-                                >
-                                    <CancelIcon fontSize="small" />
-                                </IconButton>
-                            </InputAdornment>
-                        ) : null
-                    }
-                }}
-            />
+                            </StyledToolbarButton>
+                        </Tooltip>
+                    )}
+                />
+                <QuickFilterControl
+                    render={({ ref, ...controlProps }, state) => (
+                        <StyledTextField
+                            {...controlProps}
+                            ownerState={{ expanded }}
+                            inputRef={ref}
+                            aria-label="Search"
+                            placeholder="Search..."
+                            size="small"
+                            slotProps={{
+                                input: {
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <SearchIcon fontSize="small" />
+                                        </InputAdornment>
+                                    ),
+                                    endAdornment: state.value ? (
+                                        <InputAdornment position="end">
+                                            <QuickFilterClear
+                                                edge="end"
+                                                size="small"
+                                                aria-label="Clear search"
+                                                material={{ sx: { marginRight: -0.75 } }}
+                                            >
+                                                <CancelIcon fontSize="small" />
+                                            </QuickFilterClear>
+                                        </InputAdornment>
+                                    ) : null,
+                                    ...controlProps.slotProps?.input,
+                                },
+                                ...controlProps.slotProps,
+                            }}
+                        />
+                    )}
+                />
+            </StyledQuickFilter>
         </Toolbar>
     );
 }

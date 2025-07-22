@@ -3,24 +3,26 @@ import { Box, Typography, Paper, Stack } from "@mui/material";
 import { ShowChartRounded } from '@mui/icons-material';
 
 import { EnrichedHolding } from "../../data/mockData";
+import { useThemeMode } from "../context/ThemeModeContext";
 
 interface PnLSummaryProps {
     holdings: EnrichedHolding[];
-    mode: boolean;
 }
 
-const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings, mode }) => {
+const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
     const invested = holdings.reduce((sum, h) => sum + h.avgBuyPrice * h.quantity, 0);
     const current = holdings.reduce((sum, h) => sum + h.currentPrice * h.quantity, 0);
     const gain = current - invested;
     const gainPercent = invested === 0 ? 0 : ((gain / invested) * 100);
     const isProfit = gain >= 0;
+    
+    const { mode } = useThemeMode();
     const badgeBgColor = mode
         ? (isProfit ? "#66bb6a3f" : "#d040363f")
         : (isProfit ? "#e8f5e9" : "#ffebee");
 
     return (
-        <Paper elevation={3} sx={{ padding: 2, width: '100%' }}>
+        <Paper elevation={3} sx={{ padding: 2, width: '100%', height: 420 }}>
             <Stack direction="row" spacing={2} sx={{ justifyContent: 'center', alignItems: 'center' }}>
                 <ShowChartRounded color="primary" sx={{ fontSize: 40 }} />
                 <Typography variant="h5" gutterBottom>
