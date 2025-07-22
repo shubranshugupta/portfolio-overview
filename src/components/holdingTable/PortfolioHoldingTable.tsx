@@ -4,7 +4,6 @@ import {
     GridColDef,
     GridRenderCellParams,
     GridPaginationModel,
-    GetApplyQuickFilterFn
 } from '@mui/x-data-grid';
 import {
     Paper,
@@ -62,7 +61,15 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
                 <strong>{'Asset'}</strong>
             ),
             renderCell: (params: GridRenderCellParams<any, String>) => (
-                <Box onClick={() => handleOpen(params.value || '')}>
+                <Box onClick={() => handleOpen(params.value || '')} 
+                    onMouseOver={(e) => {
+                        e.currentTarget.style.cursor = 'pointer';
+                        e.currentTarget.style.color = '#2a75c0e1';
+                    }}
+                    onMouseOut={(e) => {
+                        e.currentTarget.style.color = 'inherit';
+                    }}
+                >
                     {params.value}
                 </Box>
             ),
