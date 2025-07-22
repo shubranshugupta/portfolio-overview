@@ -66,9 +66,9 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
                     {params.value}
                 </Box>
             ),
-            getApplyQuickFilterFn: (value: String) => {
+            getApplyQuickFilterFn: (value: string) => {
                 return (cellValue) => {
-                    if(cellValue instanceof String)
+                    if(typeof cellValue === 'string')
                         return cellValue.toLowerCase().startsWith(value.toLowerCase());
                     return false;
                 }
