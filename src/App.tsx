@@ -14,12 +14,11 @@ import { Brightness4Rounded, Brightness7Rounded } from '@mui/icons-material';
 import { enrichedHoldings } from './data/mockData';
 import PortfolioHoldingsTable from './components/holdingTable/PortfolioHoldingTable';
 import RiskChart from './components/RiskChart';
-import PnLPerTrade from './components/pnl/PnLPerTrade';
-import { QuickSearchProvider } from './components/context/QuickSearchContext';
+import { useThemeMode } from './components/context/ThemeModeContext';
 import PnLSummary from './components/pnl/PnLSummary';
 
 function App() {
-    const [mode, setMode] = useState<boolean>(false);
+    const { mode, setMode } = useThemeMode();
 
     const theme = createTheme({
         palette: {
@@ -31,7 +30,7 @@ function App() {
     });
 
     const toggleMode = () => {
-        setMode((prevMode) => !prevMode);
+        setMode(!mode);
     };
 
     return (
@@ -52,23 +51,17 @@ function App() {
                         </Grid>
                     </Grid>
 
-                    <QuickSearchProvider>
-                        <Grid container spacing={{ xs: 2, md: 3 }}>
-                            <Grid size={{ xs: 12, md: 12 }}>
-                                <PortfolioHoldingsTable holdings={enrichedHoldings} />
-                            </Grid>
-                            <Grid size={{ xs: 12, md: 6 }}>
-                                <Stack direction="column" spacing={2}
-                                    sx={{ justifyContent: 'center', alignItems: 'center' }}>
-                                    <PnLSummary holdings={enrichedHoldings} mode={mode} />
-                                    <RiskChart holdings={enrichedHoldings} />
-                                </Stack>
-                            </Grid>
-                            <Grid size={{ xs: 12, md: 6 }}>
-                                <PnLPerTrade holdings={enrichedHoldings} mode={mode} />
-                            </Grid>
+                    <Grid container spacing={{ xs: 2, md: 3 }}>
+                        <Grid size={{ xs: 12, md: 12 }}>
+                            <PortfolioHoldingsTable holdings={enrichedHoldings} />
                         </Grid>
-                    </QuickSearchProvider>
+                        <Grid size={{ xs: 12, md: 6 }}>
+                            <PnLSummary holdings={enrichedHoldings} />
+                        </Grid>
+                        <Grid size={{ xs: 12, md: 6 }}>
+                            <RiskChart holdings={enrichedHoldings} />
+                        </Grid>
+                    </Grid>
                 </Box>
             </ThemeProvider>
         </div>
