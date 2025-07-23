@@ -4,7 +4,7 @@ This project is a React application set up with Vite that supports Module Federa
 
 ## Project Structure
 
-```
+``` text
 portfolio-overview
 ├── src
 │   ├── components
@@ -33,17 +33,20 @@ portfolio-overview
 ## Setup Instructions
 
 1. **Clone the repository:**
+
    ```bash
    git clone <repository-url>
    cd portfolio-overview
    ```
 
 2. **Install dependencies:**
+
    ```bash
    npm install
    ```
 
 3. **Run the application:**
+
    ```bash
    npm run dev
    ```
@@ -62,6 +65,7 @@ This project utilizes Module Federation to allow different applications to share
 ## Dependencies
 
 This project includes stable versions of the following dependencies:
+
 - React
 - ReactDOM
 - Material UI
