@@ -27,6 +27,9 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import RestoreIcon from '@mui/icons-material/Restore';
+
+import { usePortfolio } from '../context/PortfolioContext';
 
 type OwnerState = {
     expanded: boolean;
@@ -60,6 +63,7 @@ const StyledTextField = styled(TextField)<{
 }));
 
 const HoldingToolbar: React.FC = () => {
+    const {setSelectedAsset, setSelectedSector} = usePortfolio();
     const [exportMenuOpen, setExportMenuOpen] = React.useState(false);
     const exportMenuTriggerRef = React.useRef<HTMLButtonElement>(null);
 
@@ -82,6 +86,20 @@ const HoldingToolbar: React.FC = () => {
 
     return (
         <Toolbar>
+            <Tooltip title="Reset filters">
+                <ToolbarButton
+                    onClick={() => {
+                        apiRef.current.setFilterModel({ items: [] });
+                        setSelectedAsset(null);
+                        setSelectedSector(null);
+                    }}
+                >
+                    <RestoreIcon fontSize="small" />
+                </ToolbarButton>
+            </Tooltip>
+
+            <Divider orientation="vertical" variant="middle" flexItem sx={{ mx: 0.5 }} />
+
             <Tooltip title="Columns">
                 <ColumnsPanelTrigger render={<ToolbarButton />}>
                     <ViewColumnIcon fontSize="small" />

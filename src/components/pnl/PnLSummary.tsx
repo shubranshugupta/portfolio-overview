@@ -4,17 +4,34 @@ import { ShowChartRounded } from '@mui/icons-material';
 
 import { EnrichedHolding } from "../../data/mockData";
 import { useThemeMode } from "../context/ThemeModeContext";
+import { usePortfolio } from "../context/PortfolioContext";
 
 interface PnLSummaryProps {
     holdings: EnrichedHolding[];
 }
 
 const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
-    const invested = holdings.reduce((sum, h) => sum + h.avgBuyPrice * h.quantity, 0);
-    const current = holdings.reduce((sum, h) => sum + h.currentPrice * h.quantity, 0);
-    const gain = current - invested;
-    const gainPercent = invested === 0 ? 0 : ((gain / invested) * 100);
-    const isProfit = gain >= 0;
+    const { selectedAsset } = usePortfolio();
+
+    let invested = 0;
+    let current = 0;
+    let gain = 0;
+    let gainPercent = 0;
+    let isProfit = false;
+    if( selectedAsset === null ) {
+        invested = holdings.reduce((sum, h) => sum + h.avgBuyPrice * h.quantity, 0);
+        current = holdings.reduce((sum, h) => sum + h.currentPrice * h.quantity, 0);
+        gain = current - invested;
+        gainPercent = invested === 0 ? 0 : ((gain / invested) * 100);
+        isProfit = gain >= 0;
+    } else {
+        const selectedHolding = holdings.find(h => h.id === selectedAsset.id);
+        invested = selectedHolding ? selectedHolding.avgBuyPrice * selectedHolding.quantity : 0;
+        current = selectedHolding ? selectedHolding.currentPrice * selectedHolding.quantity : 0;
+        gain = current - invested;
+        gainPercent = invested === 0 ? 0 : ((gain / invested) * 100);
+        isProfit = gain >= 0;
+    }
     
     const { mode } = useThemeMode();
     const badgeBgColor = mode
@@ -26,7 +43,7 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
             <Stack direction="row" spacing={2} sx={{ justifyContent: 'center', alignItems: 'center' }}>
                 <ShowChartRounded color="primary" sx={{ fontSize: 40 }} />
                 <Typography variant="h5" gutterBottom>
-                    Portfolio PnL Summary
+                    {selectedAsset ? selectedAsset.name : "Portfolio"} PnL Summary
                 </Typography>
             </Stack>
 
