@@ -96,7 +96,7 @@ const RiskChart: React.FC<RiskChartProps> = ({ holdings }) => {
     const chartData: ChartData[] = exposure === 'sector' ? sectorSummaryResult : assetSummaryResult;
 
     return (
-        <Paper elevation={3} sx={{ padding: 2, width: '100%' }}>
+        <Paper elevation={3} sx={{ padding: 2, width: '100%', minHeight: 420 }}>
             <Stack direction="row" spacing={2} sx={{ justifyContent: 'center', alignItems: 'center' }}>
                 <PieChartRounded color="primary" sx={{ fontSize: 40 }} />
                 <Typography variant="h5" gutterBottom>
