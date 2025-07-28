@@ -17,4 +17,8 @@ export default defineConfig({
       shared: ['react', 'react-dom', '@mui/material'],
     }),
   ],
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+  },
 });
