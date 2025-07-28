@@ -152,7 +152,7 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
                             Net P&L
                         </Typography>
                         <Typography variant="subtitle1" fontWeight={600} color={isProfit ? "green" : "red"}>
-                            {`₹${Math.abs(gain).toLocaleString()}`}
+                            {isProfit?"+":"-"}{`₹${Math.abs(gain).toLocaleString()}`}
                         </Typography>
                     </Paper>
                     <Paper
@@ -164,7 +164,7 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
                             Return %
                         </Typography>
                         <Typography variant="subtitle1" fontWeight={600} color={isProfit ? "green" : "red"}>
-                            {`${Math.abs(gainPercent).toFixed(1)}%`}
+                            {isProfit?"+":"-"}{`${Math.abs(gainPercent).toFixed(1)}%`}
                         </Typography>
                     </Paper>
                 </Box>
