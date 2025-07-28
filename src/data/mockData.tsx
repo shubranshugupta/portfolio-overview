@@ -124,8 +124,8 @@ const generatePriceHistory = (
     date.setMonth(date.getMonth() + 1); // Move to the next month
 
     // Define the price boundaries for random generation
-    const lowerBound = startPrice * 0.9; // startPrice - 10%
-    const upperBound = endPrice * 1.1;   // endPrice + 10%
+    const lowerBound = startPrice * 0.95; // startPrice - 5%
+    const upperBound = endPrice * 1.05;   // endPrice + 5%
 
     // 2. Generate random prices for the intermediate months
     // Loop for totalMonths - 2 because start and end points are handled separately
