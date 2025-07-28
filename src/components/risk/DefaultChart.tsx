@@ -43,39 +43,10 @@ function getTop3Data(data: ChartData[]): ChartData[] {
     return sorted;
 }
 
-// --- Chart Config ---
-const pieChartSlotsProps = {
-    legend: {
-        direction: 'horizontal' as const,
-        position: {
-            vertical: 'bottom' as const,
-            horizontal: 'center' as const,
-        },
-        sx: {
-            gap: '14px',
-            [`.${legendClasses.mark}`]: {
-                height: 14,
-                width: 14,
-            },
-            '.MuiChartsLegend-series': {
-                gap: '9px',
-            },
-        },
-    },
-};
-
-const pieChartSeriesProps = {
-    innerRadius: 50,
-    outerRadius: 120,
-    paddingAngle: 1,
-    cornerRadius: 3,
-    highlightScope: { fade: 'global' as const, highlight: 'item' as const },
-    faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
-    valueFormatter,
-};
-
 // --- Component ---
 const DefaultChart: React.FC<DefaultChartProps> = ({ holdings }) => {
+    const TOTAL = holdings.reduce((sum, row) => sum + (row.currentPrice * row.quantity), 0)
+
     // --- Sector Summary (Group by sector) ---
     const sectorSummaryMap = holdings.reduce<Record<string, number>>((acc, hold) => {
         const { sector, stockValue } = hold;
@@ -119,10 +90,37 @@ const DefaultChart: React.FC<DefaultChartProps> = ({ holdings }) => {
                 series={[
                     {
                         data: exposure === 'sector' ? sectorSummaryResult : assetSummaryResult,
-                        ...pieChartSeriesProps,
+                        innerRadius: 50,
+                        outerRadius: 120,
+                        paddingAngle: 1,
+                        cornerRadius: 3,
+                        highlightScope: { fade: 'global', highlight: 'item' },
+                        faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
+                        valueFormatter: (value) => {
+                            const percent = (value.value/TOTAL)*100;
+                            return `${valueFormatter(value)} (${percent.toFixed(1)}%)`
+                        }
                     },
                 ]}
-                slotProps={pieChartSlotsProps}
+                slotProps={{
+                    legend: {
+                        direction: 'horizontal',
+                        position: {
+                            vertical: 'bottom',
+                            horizontal: 'center',
+                        },
+                        sx: {
+                            gap: '14px',
+                            [`.${legendClasses.mark}`]: {
+                                height: 14,
+                                width: 14,
+                            },
+                            '.MuiChartsLegend-series': {
+                                gap: '9px',
+                            },
+                        },
+                    }
+                }}
             />
         )
     } else if (exposure === 'history') {
@@ -133,7 +131,8 @@ const DefaultChart: React.FC<DefaultChartProps> = ({ holdings }) => {
                     top5AssetHistory.slice(0, 3).map((hold) => ({
                         data: hold.history.price,
                         label: hold.asset,
-                        valueFormatter
+                        valueFormatter: valueFormatter,
+                        showMark: false
                     }))
                 }
                 xAxis={[{ 
