@@ -9,14 +9,14 @@ export interface PortfolioHolding {
 }
 
 export interface HistoryPrice {
-    date: string;
-    price: number;
+    date: string[];
+    price: number[];
 }
 
 export interface PortfolioHistoryPrice {
     id: number;
     asset: string;
-    history: HistoryPrice[];
+    history: HistoryPrice;
 }
 
 // Extend for enriched holdings
@@ -113,16 +113,14 @@ const generatePriceHistory = (
   startPrice: number,
   endPrice: number,
   totalMonths: number
-): HistoryPrice[] => {
-    const history: HistoryPrice[] = [];
+): HistoryPrice => {
+    const history: HistoryPrice = { date: [], price: [] };
     const date = new Date();
     date.setMonth(date.getMonth() - (totalMonths - 1)); // Set date to the beginning
 
     // 1. Add the exact start price for the first date
-    history.push({
-        date: new Date(date).toISOString().slice(0, 10),
-        price: startPrice,
-    });
+    history.date.push(new Date(date).toISOString().slice(0, 10));
+    history.price.push(startPrice);
     date.setMonth(date.getMonth() + 1); // Move to the next month
 
     // Define the price boundaries for random generation
@@ -133,18 +131,14 @@ const generatePriceHistory = (
     // Loop for totalMonths - 2 because start and end points are handled separately
     for (let i = 0; i < totalMonths - 2; i++) {
         const randomPrice = Math.random() * (upperBound - lowerBound) + lowerBound;
-        history.push({
-            date: new Date(date).toISOString().slice(0, 10),
-            price: parseFloat(randomPrice.toFixed(2)),
-        });
+        history.date.push(new Date(date).toISOString().slice(0, 10));
+        history.price.push(parseFloat(randomPrice.toFixed(2)));
         date.setMonth(date.getMonth() + 1); // Move to the next month
     }
 
     // 3. Add the exact end price for the last date
-    history.push({
-        date: new Date(date).toISOString().slice(0, 10),
-        price: endPrice,
-    });
+    history.date.push(new Date(date).toISOString().slice(0, 10));
+    history.price.push(endPrice);
 
     return history;
 };
