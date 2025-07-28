@@ -39,7 +39,8 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
     const columns: GridColDef<EnrichedHolding>[] = [
         {
             field: 'id',
-            width: 90,
+            minWidth: 90,
+            flex: 0.5,
             type: 'number',
             headerName: 'Id',
             renderHeader: () => (
@@ -49,6 +50,7 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
         },
         {
             field: 'asset',
+            minWidth: 100,
             flex: 1.5,
             headerName: 'Asset',
             renderHeader: () => (
@@ -77,6 +79,7 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
         },
         {
             field: 'quantity',
+            minWidth: 100,
             flex: 1,
             type: 'number',
             headerName: 'Quantity',
@@ -87,6 +90,7 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
         },
         {
             field: 'avgBuyPrice',
+            minWidth: 200,
             flex: 1.5,
             type: 'number',
             headerName: 'Avg Buy Price',
@@ -97,6 +101,7 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
         },
         {
             field: 'currentPrice',
+            minWidth: 200,
             flex: 1.5,
             type: 'number',
             headerName: 'Current Price',
@@ -107,6 +112,7 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
         },
         {
             field: 'stockValue',
+            minWidth: 200,
             flex: 2,
             type: 'number',
             headerName: 'Current Value',
@@ -117,6 +123,7 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
         },
         {
             field: 'pnl',
+            minWidth: 100,
             flex:1,
             headerName: 'PnL',
             renderCell: (params: GridRenderCellParams<EnrichedHolding, number>) => (
