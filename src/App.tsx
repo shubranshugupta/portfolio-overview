@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
     Box,
     Grid,
@@ -54,7 +53,7 @@ function App() {
 
                     <PortfolioProvider>
                         <Grid container spacing={{ xs: 2, md: 3 }}>
-                            <Grid size={{ xs: 12, md: 12 }}>
+                            <Grid size={{ xs: 12 }}>
                                 <PortfolioHoldingsTable holdings={enrichedHoldings} />
                             </Grid>
                             <Grid size={{ xs: 12, md: 6 }}>
