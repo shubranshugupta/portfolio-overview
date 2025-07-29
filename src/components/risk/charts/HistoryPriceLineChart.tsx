@@ -96,7 +96,7 @@ const HistoryPriceLineChart: React.FC<HistoryPriceLineChartProps> = ({ holdings,
                     isProfit == null ? '#7b1fa2' : isProfit ? '#2e7d32' : '#b71c1c',
                     '#c2185b', '#039be5'
                 ]}
-                skipAnimation={false}
+                skipAnimation={true}
             />
         </>
     );

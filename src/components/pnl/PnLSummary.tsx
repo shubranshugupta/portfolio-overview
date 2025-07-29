@@ -39,7 +39,7 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
         : (isProfit ? "#e8f5e9" : "#ffebee");
 
     return (
-        <Paper elevation={3} sx={{ padding: 2, width: '100%', minHeight: 465 }}>
+        <Paper elevation={3} sx={{ padding: 2, width: '100%', minHeight: 500 }}>
             <Stack direction="row" spacing={2} sx={{ justifyContent: 'center', alignItems: 'center' }}>
                 <ShowChartRounded color="primary" sx={{ fontSize: 40 }} />
                 <Typography variant="h5" gutterBottom>
