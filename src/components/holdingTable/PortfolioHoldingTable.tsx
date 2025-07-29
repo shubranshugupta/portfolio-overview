@@ -10,42 +10,37 @@ import {
     Typography,
     Box,
     Stack,
-    Backdrop,
-    Modal,
-    Fade
 } from '@mui/material';
 import { InsertChartRounded } from '@mui/icons-material';
 import type { EnrichedHolding } from '../../data/mockData';
 import HoldingToolbar from './HoldingToolbar';
-import AssetPnL from '../pnl/AssetPnL';
+import { usePortfolio } from '../context/PortfolioContext';
 
 interface PortfolioHoldingProps {
     holdings: EnrichedHolding[];
 }
 
-const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: 2
-};
-
 const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
     holdings
 }) => {
-    const [selectedAsset, setSelectedAsset] = useState<String | null>(null);
-
-    const handleOpen = (assetName: String) => setSelectedAsset(assetName);
-    const handleClose = () => setSelectedAsset(null);
+    const { setSelectedAsset, setSelectedSector } = usePortfolio();
+    const handleOnclick = (asset: String) => {
+        const selected = holdings.find(h => h.asset === asset);
+        if (selected) {
+            setSelectedAsset({ 
+                id: selected.id, 
+                name: selected.asset, 
+                sector: selected.sector 
+            });
+            setSelectedSector(selected.sector);
+        }
+    }
 
     const columns: GridColDef<EnrichedHolding>[] = [
         {
             field: 'id',
-            width: 90,
+            minWidth: 90,
+            flex: 0.5,
             type: 'number',
             headerName: 'Id',
             renderHeader: () => (
@@ -55,13 +50,14 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
         },
         {
             field: 'asset',
-            width: 200,
+            minWidth: 100,
+            flex: 1.5,
             headerName: 'Asset',
             renderHeader: () => (
                 <strong>{'Asset'}</strong>
             ),
             renderCell: (params: GridRenderCellParams<any, String>) => (
-                <Box onClick={() => handleOpen(params.value || '')} 
+                <Box onClick={() => handleOnclick(params.value as String)} 
                     onMouseOver={(e) => {
                         e.currentTarget.style.cursor = 'pointer';
                         e.currentTarget.style.color = '#2a75c0e1';
@@ -83,7 +79,8 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
         },
         {
             field: 'quantity',
-            width: 200,
+            minWidth: 100,
+            flex: 1,
             type: 'number',
             headerName: 'Quantity',
             renderHeader: () => (
@@ -93,7 +90,8 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
         },
         {
             field: 'avgBuyPrice',
-            width: 200,
+            minWidth: 200,
+            flex: 1.5,
             type: 'number',
             headerName: 'Avg Buy Price',
             renderHeader: () => (
@@ -103,7 +101,8 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
         },
         {
             field: 'currentPrice',
-            width: 200,
+            minWidth: 200,
+            flex: 1.5,
             type: 'number',
             headerName: 'Current Price',
             renderHeader: () => (
@@ -113,7 +112,8 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
         },
         {
             field: 'stockValue',
-            width: 200,
+            minWidth: 200,
+            flex: 2,
             type: 'number',
             headerName: 'Current Value',
             renderHeader: () => (
@@ -123,7 +123,8 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
         },
         {
             field: 'pnl',
-            width: 200,
+            minWidth: 100,
+            flex:1,
             headerName: 'PnL',
             renderCell: (params: GridRenderCellParams<EnrichedHolding, number>) => (
                 <span style={{ color: params.value ? params.value >= 0 ? 'green' : 'red' : 'green' }}>
@@ -165,25 +166,6 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
                     slots={{ toolbar: HoldingToolbar }}
                 />
             </Box>
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                open={selectedAsset !== null} // Open when an asset is selected
-                onClose={handleClose}
-                closeAfterTransition
-                slots={{ backdrop: Backdrop }}
-                slotProps={{
-                    backdrop: {
-                        timeout: 500,
-                    },
-                }}
-            >
-                <Fade in={selectedAsset !== null}>
-                    <Box sx={modalStyle}>
-                        <AssetPnL holdings={holdings} assetName={selectedAsset || "NA"} />
-                    </Box>
-                </Fade>
-            </Modal>
         </Paper>
     );
 };

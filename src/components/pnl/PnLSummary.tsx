@@ -4,29 +4,46 @@ import { ShowChartRounded } from '@mui/icons-material';
 
 import { EnrichedHolding } from "../../data/mockData";
 import { useThemeMode } from "../context/ThemeModeContext";
+import { usePortfolio } from "../context/PortfolioContext";
 
 interface PnLSummaryProps {
     holdings: EnrichedHolding[];
 }
 
 const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
-    const invested = holdings.reduce((sum, h) => sum + h.avgBuyPrice * h.quantity, 0);
-    const current = holdings.reduce((sum, h) => sum + h.currentPrice * h.quantity, 0);
-    const gain = current - invested;
-    const gainPercent = invested === 0 ? 0 : ((gain / invested) * 100);
-    const isProfit = gain >= 0;
-    
+    const { selectedAsset } = usePortfolio();
+
+    let invested = 0;
+    let current = 0;
+    let gain = 0;
+    let gainPercent = 0;
+    let isProfit = false;
+    if (selectedAsset === null) {
+        invested = holdings.reduce((sum, h) => sum + h.avgBuyPrice * h.quantity, 0);
+        current = holdings.reduce((sum, h) => sum + h.currentPrice * h.quantity, 0);
+        gain = current - invested;
+        gainPercent = invested === 0 ? 0 : ((gain / invested) * 100);
+        isProfit = gain >= 0;
+    } else {
+        const selectedHolding = holdings.find(h => h.id === selectedAsset.id);
+        invested = selectedHolding ? selectedHolding.avgBuyPrice * selectedHolding.quantity : 0;
+        current = selectedHolding ? selectedHolding.currentPrice * selectedHolding.quantity : 0;
+        gain = current - invested;
+        gainPercent = invested === 0 ? 0 : ((gain / invested) * 100);
+        isProfit = gain >= 0;
+    }
+
     const { mode } = useThemeMode();
     const badgeBgColor = mode
         ? (isProfit ? "#66bb6a3f" : "#d040363f")
         : (isProfit ? "#e8f5e9" : "#ffebee");
 
     return (
-        <Paper elevation={3} sx={{ padding: 2, width: '100%', height: 420 }}>
+        <Paper elevation={3} sx={{ padding: 2, width: '100%', minHeight: 420 }}>
             <Stack direction="row" spacing={2} sx={{ justifyContent: 'center', alignItems: 'center' }}>
                 <ShowChartRounded color="primary" sx={{ fontSize: 40 }} />
                 <Typography variant="h5" gutterBottom>
-                    Portfolio PnL Summary
+                    {selectedAsset ? selectedAsset.name : "Portfolio"} PnL Summary
                 </Typography>
             </Stack>
 
@@ -93,47 +110,65 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
                 </Box>
             </Box>
 
-            <Box sx={{ mt: 3, display: "flex", justifyContent: "space-between", gap: 2 }}>
-                {[
-                    {
-                        label: "Total Invested",
-                        value: `₹${invested.toLocaleString()}`,
-                        color: "inherit",
-                    },
-                    {
-                        label: "Current Value",
-                        value: `₹${current.toLocaleString()}`,
-                        color: "inherit",
-                    },
-                    {
-                        label: "Net P&L",
-                        value: `₹${Math.abs(gain).toLocaleString()}`,
-                        color: isProfit ? "green" : "red",
-                    },
-                    {
-                        label: "Return %",
-                        value: `${Math.abs(gainPercent).toFixed(1)}%`,
-                        color: isProfit ? "green" : "red",
-                    },
-                ].map((item, index) => (
+            <Stack direction={{ xs: 'column', sm: 'row' }}
+                spacing={{ xs: 2 }}
+                alignItems="center"
+                justifyContent="center"
+                sx={{ m: 3 }}
+            >
+                <Box display='flex' justifyContent='space-between' gap={2}>
                     <Paper
-                        key={index}
+                        key={0}
                         elevation={2}
-                        sx={{
-                            flex: "0 0 15%", // each box takes ~1/4 width with some spacing
-                            textAlign: "center",
-                            p: 2,
-                        }}
+                        sx={{ textAlign: "center", p: 2, minWidth: 125}}
                     >
                         <Typography variant="caption" color="textSecondary">
-                            {item.label}
+                            Total Invested
                         </Typography>
-                        <Typography variant="subtitle1" fontWeight={600} color={item.color}>
-                            {item.value}
+                        <Typography variant="subtitle1" fontWeight={600} color='inherit'>
+                            {`₹${invested.toLocaleString()}`}
                         </Typography>
                     </Paper>
-                ))}
-            </Box>
+                    <Paper
+                        key={1}
+                        elevation={2}
+                        sx={{ textAlign: "center", p: 2, minWidth: 125}}
+                    >
+                        <Typography variant="caption" color="textSecondary">
+                            Current Value
+                        </Typography>
+                        <Typography variant="subtitle1" fontWeight={600} color='inherit'>
+                            {`₹${current.toLocaleString()}`}
+                        </Typography>
+                    </Paper>
+                </Box>
+                <Box display='flex' justifyContent='space-between' gap={2}>
+                    <Paper
+                        key={2}
+                        elevation={2}
+                        sx={{ textAlign: "center", p: 2, minWidth: 125}}
+                    >
+                        <Typography variant="caption" color="textSecondary">
+                            Net P&L
+                        </Typography>
+                        <Typography variant="subtitle1" fontWeight={600} color={isProfit ? "green" : "red"}>
+                            {isProfit?"+":"-"}{`₹${Math.abs(gain).toLocaleString()}`}
+                        </Typography>
+                    </Paper>
+                    <Paper
+                        key={3}
+                        elevation={2}
+                        sx={{ textAlign: "center", p: 2, minWidth: 125}}
+                    >
+                        <Typography variant="caption" color="textSecondary">
+                            Return %
+                        </Typography>
+                        <Typography variant="subtitle1" fontWeight={600} color={isProfit ? "green" : "red"}>
+                            {isProfit?"+":"-"}{`${Math.abs(gainPercent).toFixed(1)}%`}
+                        </Typography>
+                    </Paper>
+                </Box>
+            </Stack>
         </Paper>
     );
 };

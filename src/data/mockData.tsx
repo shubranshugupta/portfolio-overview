@@ -8,6 +8,17 @@ export interface PortfolioHolding {
     sector: string;
 }
 
+export interface HistoryPrice {
+    date: string[];
+    price: number[];
+}
+
+export interface PortfolioHistoryPrice {
+    id: number;
+    asset: string;
+    history: HistoryPrice;
+}
+
 // Extend for enriched holdings
 export interface EnrichedHolding extends PortfolioHolding {
     stockValue: number;
@@ -97,6 +108,48 @@ export const portfolioHoldings: PortfolioHolding[] = [
         sector: 'FMCG',
     },
 ];
+
+const generatePriceHistory = (
+  startPrice: number,
+  endPrice: number,
+  totalMonths: number
+): HistoryPrice => {
+    const history: HistoryPrice = { date: [], price: [] };
+    const date = new Date();
+    date.setMonth(date.getMonth() - (totalMonths - 1)); // Set date to the beginning
+
+    // 1. Add the exact start price for the first date
+    history.date.push(new Date(date).toISOString().slice(0, 10));
+    history.price.push(startPrice);
+    date.setMonth(date.getMonth() + 1); // Move to the next month
+
+    // Define the price boundaries for random generation
+    const lowerBound = startPrice * 0.95; // startPrice - 5%
+    const upperBound = endPrice * 1.05;   // endPrice + 5%
+
+    // 2. Generate random prices for the intermediate months
+    // Loop for totalMonths - 2 because start and end points are handled separately
+    for (let i = 0; i < totalMonths - 2; i++) {
+        const randomPrice = Math.random() * (upperBound - lowerBound) + lowerBound;
+        history.date.push(new Date(date).toISOString().slice(0, 10));
+        history.price.push(parseFloat(randomPrice.toFixed(2)));
+        date.setMonth(date.getMonth() + 1); // Move to the next month
+    }
+
+    // 3. Add the exact end price for the last date
+    history.date.push(new Date(date).toISOString().slice(0, 10));
+    history.price.push(endPrice);
+
+    return history;
+};
+
+export const portfolioHoldingHistoryPrice: PortfolioHistoryPrice[] = portfolioHoldings.map((holding) => {
+    return {
+        id: holding.id,
+        asset: holding.asset,
+        history: generatePriceHistory(holding.avgBuyPrice, holding.currentPrice, 24),
+    };
+});
 
 // Add calculated fields (stockValue, pnl)
 export const enrichedHoldings: EnrichedHolding[] = portfolioHoldings.map((row) => {
