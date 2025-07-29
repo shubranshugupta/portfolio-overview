@@ -18,6 +18,7 @@ import {
     valueFormatter,
     portfolioHoldingHistoryPrice  
 } from '../../data/mockData';
+import { useFilterModel } from '../context/FilterModelContext';
 
 // Type for chart data points
 interface ChartData {
@@ -45,6 +46,19 @@ function getTop3Data(data: ChartData[]): ChartData[] {
 
 // --- Component ---
 const DefaultChart: React.FC<DefaultChartProps> = ({ holdings }) => {
+    const { setFilterModel } = useFilterModel();
+
+    const handleSectorItemClick = (sector: string | null) => {
+        if(sector!=='Others') 
+            setFilterModel({items: [{
+                field: 'sector',
+                operator: 'is',
+                value: sector
+            }]});
+        else
+            setFilterModel({items: []});
+    };
+
     const TOTAL = holdings.reduce((sum, row) => sum + (row.currentPrice * row.quantity), 0)
 
     // --- Sector Summary (Group by sector) ---
@@ -119,6 +133,12 @@ const DefaultChart: React.FC<DefaultChartProps> = ({ holdings }) => {
                                 gap: '9px',
                             },
                         },
+                    }
+                }}
+                onItemClick={(event, identifier, item) => {
+                    if(exposure==='sector'){
+                        if(typeof item.label === 'string')
+                            handleSectorItemClick(item.label);
                     }
                 }}
             />

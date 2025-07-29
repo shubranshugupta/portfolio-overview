@@ -16,6 +16,7 @@ import RiskChart from './components/risk/RiskChart';
 import { useThemeMode } from './components/context/ThemeModeContext';
 import PnLSummary from './components/pnl/PnLSummary';
 import { PortfolioProvider } from './components/context/PortfolioContext';
+import { FilterModelProvider } from './components/context/FilterModelContext';
 
 function App() {
     const { mode, setMode } = useThemeMode();
@@ -52,17 +53,19 @@ function App() {
                     </Grid>
 
                     <PortfolioProvider>
-                        <Grid container spacing={{ xs: 2, md: 1 }}>
-                            <Grid size={{ xs: 12 }}>
-                                <PortfolioHoldingsTable holdings={enrichedHoldings} />
+                        <FilterModelProvider>
+                            <Grid container spacing={{ xs: 2, md: 1 }}>
+                                <Grid size={{ xs: 12 }}>
+                                    <PortfolioHoldingsTable holdings={enrichedHoldings} />
+                                </Grid>
+                                <Grid size={{ xs: 12, md: 6 }}>
+                                    <PnLSummary holdings={enrichedHoldings} />
+                                </Grid>
+                                <Grid size={{ xs: 12, md: 6 }}>
+                                    <RiskChart holdings={enrichedHoldings} />
+                                </Grid>
                             </Grid>
-                            <Grid size={{ xs: 12, md: 6 }}>
-                                <PnLSummary holdings={enrichedHoldings} />
-                            </Grid>
-                            <Grid size={{ xs: 12, md: 6 }}>
-                                <RiskChart holdings={enrichedHoldings} />
-                            </Grid>
-                        </Grid>
+                        </FilterModelProvider>
                     </PortfolioProvider>
                 </Box>
             </ThemeProvider>

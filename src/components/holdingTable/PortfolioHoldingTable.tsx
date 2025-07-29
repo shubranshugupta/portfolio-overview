@@ -4,6 +4,7 @@ import {
     GridColDef,
     GridRenderCellParams,
     GridPaginationModel,
+    GridFilterModel
 } from '@mui/x-data-grid';
 import {
     Paper,
@@ -15,6 +16,7 @@ import { InsertChartRounded } from '@mui/icons-material';
 import type { EnrichedHolding } from '../../data/mockData';
 import HoldingToolbar from './HoldingToolbar';
 import { usePortfolio } from '../context/PortfolioContext';
+import { useFilterModel } from '../context/FilterModelContext';
 
 interface PortfolioHoldingProps {
     holdings: EnrichedHolding[];
@@ -24,6 +26,7 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
     holdings
 }) => {
     const { setSelectedAsset, setSelectedSector } = usePortfolio();
+    const { filterModel, setFilterModel } = useFilterModel();
     const handleOnclick = (asset: String) => {
         const selected = holdings.find(h => h.asset === asset);
         if (selected) {
@@ -78,6 +81,18 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
             }
         },
         {
+            field: 'sector',
+            minWidth: 100,
+            flex: 1.5,
+            type: 'singleSelect',
+            valueOptions: [...new Set(holdings.map((item) => item.sector))],
+            headerName: 'Sector',
+            renderHeader: () => (
+                <strong>{'Sector'}</strong>
+            ),
+            getApplyQuickFilterFn: () => null
+        },
+        {
             field: 'quantity',
             minWidth: 100,
             flex: 1,
@@ -113,7 +128,7 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
         {
             field: 'stockValue',
             minWidth: 200,
-            flex: 2,
+            flex: 1.5,
             type: 'number',
             headerName: 'Current Value',
             renderHeader: () => (
@@ -164,6 +179,8 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
                     showToolbar
                     sx={{ height: 425 }}
                     slots={{ toolbar: HoldingToolbar }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(model) => {setFilterModel(model)}}
                 />
             </Box>
         </Paper>
