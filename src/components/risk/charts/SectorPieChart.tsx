@@ -51,7 +51,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({ holdings, getTopNData }
             label,
             value: parseFloat(value.toFixed(2)),
         })),
-        3
+        4
     );
 
     // If a sector is selected, filter the holdings to that sector
