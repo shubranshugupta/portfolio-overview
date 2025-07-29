@@ -145,6 +145,12 @@ const DefaultChart: React.FC<DefaultChartProps> = ({ holdings }) => {
                 }]}
                 yAxis={[{ width: 50 }]}
                 margin={{ right: 24 }}
+                slotProps={{
+                    legend: {
+                        direction: 'horizontal',
+                        position: { vertical: 'bottom', horizontal: 'center' }
+                    }
+                }}
             />
         );
     }
