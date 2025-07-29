@@ -1,9 +1,11 @@
 import React from 'react';
 import { LineChart } from '@mui/x-charts';
+import { Tooltip, Button, ButtonGroup, Box } from '@mui/material';
 
 import type { EnrichedHolding, PortfolioHistoryPrice } from '../../../data/mockData';
 import { valueFormatter, portfolioHoldingHistoryPrice } from '../../../data/mockData';
 import { DataFormatType } from '../RiskChart';
+import { usePortfolio } from '../../context/PortfolioContext';
 
 interface HistoryPriceLineChartProps {
     holdings: EnrichedHolding[];
@@ -11,6 +13,10 @@ interface HistoryPriceLineChartProps {
 }
 
 const HistoryPriceLineChart: React.FC<HistoryPriceLineChartProps> = ({ holdings, getTopNData }) => {
+    const { selectedAsset } = usePortfolio();
+    let isProfit = null;
+    const [periodLen, setPeriodLen] = React.useState(12);
+
     const top3Asset: DataFormatType[] = getTopNData(
         holdings.map((row) => ({
             label: row.asset,
@@ -18,42 +24,81 @@ const HistoryPriceLineChart: React.FC<HistoryPriceLineChartProps> = ({ holdings,
         })),
         3
     );
-    const top5AssetHistory: PortfolioHistoryPrice[] = top3Asset
-            .map((hold) => ({
-                id: portfolioHoldingHistoryPrice.find(h => h.asset === hold.label)?.id || -1,
-                asset: hold.label,
-                history: portfolioHoldingHistoryPrice.find(h => h.asset === hold.label)?.history || 
-                    { date: [], price: [] },
-            }));
+    let assetHistory: PortfolioHistoryPrice[] = top3Asset
+        .map((hold) => ({
+            id: portfolioHoldingHistoryPrice.find(h => h.asset === hold.label)?.id || -1,
+            asset: hold.label,
+            history: portfolioHoldingHistoryPrice.find(h => h.asset === hold.label)?.history ||
+                { date: [], price: [] },
+        }));
+
+    if (selectedAsset !== null) {
+        const selectedHolding = holdings.find(h => h.asset === selectedAsset.name);
+        isProfit = selectedHolding ? selectedHolding.currentPrice > selectedHolding.avgBuyPrice : null;
+        assetHistory = [{
+            id: portfolioHoldingHistoryPrice.find(h => h.asset === selectedAsset.name)?.id || -1,
+            asset: selectedAsset.name,
+            history: portfolioHoldingHistoryPrice.find(h => h.asset === selectedAsset.name)?.history ||
+                { date: [], price: [] },
+        }];
+    }
 
     return (
-        <LineChart
-            height={300}
-            series={
-                top5AssetHistory.slice(0, 3).map((hold) => ({
-                    data: hold.history.price,
-                    label: hold.asset,
-                    valueFormatter: valueFormatter,
-                    showMark: false
-                }))
-            }
-            xAxis={[{ 
-                scaleType: 'point', 
-                data: top5AssetHistory[0].history.date,
-                valueFormatter: (value) => new Date(value).toLocaleDateString('en-US', {
-                    month: '2-digit',
-                    year: '2-digit'
-                })
-            }]}
-            yAxis={[{ width: 50 }]}
-            margin={{ right: 24 }}
-            slotProps={{
-                legend: {
-                    direction: 'horizontal',
-                    position: { vertical: 'bottom', horizontal: 'center' }
+        <>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end', // Pushes items to opposite ends
+                    alignItems: 'center',
+                }}
+            >
+                <Tooltip title="Period">
+                    <ButtonGroup
+                        variant="outlined"
+                        color='warning'
+                        size="small"
+                        sx={{ margin: 0.5 }}
+                    >
+                        <Button onClick={() => setPeriodLen(12)}>12m</Button>
+                        <Button onClick={() => setPeriodLen(24)}>24m</Button>
+                    </ButtonGroup>
+                </Tooltip>
+            </Box>
+
+            <LineChart
+                height={300}
+                series={
+                    assetHistory.slice(0, 3).map((hold) => ({
+                        data: hold.history.price.slice(-periodLen),
+                        label: hold.asset,
+                        valueFormatter: valueFormatter,
+                        showMark: false,
+                    }))
                 }
-            }}
-        />
+                xAxis={[{
+                    scaleType: 'point',
+                    data: assetHistory[0].history.date.slice(-periodLen),
+                    valueFormatter: (value) => new Date(value).toLocaleDateString('en-US', {
+                        month: '2-digit',
+                        year: '2-digit'
+                    })
+                }]}
+                yAxis={[{ width: 50 }]}
+                margin={{ right: 24 }}
+                slotProps={{
+                    legend: {
+                        direction: 'horizontal',
+                        position: { vertical: 'bottom', horizontal: 'center' }
+                    }
+                }}
+                grid={{ vertical: true, horizontal: true }}
+                colors={[
+                    isProfit == null ? '#7b1fa2' : isProfit ? '#2e7d32' : '#b71c1c',
+                    '#c2185b', '#039be5'
+                ]}
+                skipAnimation={false}
+            />
+        </>
     );
 }
 

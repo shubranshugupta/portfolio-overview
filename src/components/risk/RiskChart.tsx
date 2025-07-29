@@ -13,6 +13,7 @@ import { EnrichedHolding } from "../../data/mockData";
 import SectorPieChart from './charts/SectorPieChart';
 import AssetPieChart from './charts/AssetPieChart';
 import HistoryPriceLineChart from './charts/HistoryPriceLineChart';
+import { usePortfolio } from '../context/PortfolioContext';
 
 interface RiskChartProps {
     holdings: EnrichedHolding[];
@@ -66,11 +67,11 @@ function getTopNData(data: DataFormatType[], n: number): DataFormatType[] {
 
 const RiskChart: React.FC<RiskChartProps> = ({ holdings }) => {
     const [tabIdx, setTabIdx] = useState(0);
-
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
                 setTabIdx(newValue);
     };
 
+    const { selectedAsset, selectedSector } = usePortfolio();
 
     return (
         <Paper elevation={3} sx={{ padding: 2, width: '100%', minHeight: 420 }}>
@@ -91,16 +92,24 @@ const RiskChart: React.FC<RiskChartProps> = ({ holdings }) => {
                         variant="scrollable"
                         scrollButtons="auto"
                     >
-                        <Tab label="Sector Exposure" {...a11yProps(0)} />
-                        <Tab label="Asset Exposure" {...a11yProps(1)} />
-                        <Tab label="Top 3 Holdings Performance" {...a11yProps(2)} />
+                        <Tab label={`${selectedSector? selectedSector:""} Sector Exposure`} {...a11yProps(0)} />
+                        <Tab label={`${selectedAsset ? selectedAsset.name+" Performance":"Asset Exposure"}`} 
+                            {...a11yProps(1)} 
+                        />
+                        {!selectedSector && (
+                            <Tab label='Top 3 Holdings Performance' {...a11yProps(2)} />
+                        )}
                     </Tabs>
                 </Box>
                 <CustomTabPanel value={tabIdx} index={0}>
                     <SectorPieChart holdings={holdings} getTopNData={getTopNData} />
                 </CustomTabPanel>
                 <CustomTabPanel value={tabIdx} index={1}>
-                    <AssetPieChart holdings={holdings} getTopNData={getTopNData} />
+                    { selectedAsset ? (
+                        <HistoryPriceLineChart holdings={holdings} getTopNData={getTopNData} />
+                    ) : (
+                        <AssetPieChart holdings={holdings} getTopNData={getTopNData} />
+                    )}
                 </CustomTabPanel>
                 <CustomTabPanel value={tabIdx} index={2}>
                     <HistoryPriceLineChart holdings={holdings} getTopNData={getTopNData} />

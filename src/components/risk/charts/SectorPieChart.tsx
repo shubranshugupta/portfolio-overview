@@ -5,6 +5,7 @@ import type { EnrichedHolding } from '../../../data/mockData';
 import { valueFormatter } from '../../../data/mockData';
 import { useFilterModel } from '../../context/FilterModelContext';
 import { DataFormatType } from '../RiskChart';
+import { usePortfolio } from '../../context/PortfolioContext';
 
 
 interface SectorPieChartProps {
@@ -13,18 +14,29 @@ interface SectorPieChartProps {
 }
 
 const SectorPieChart: React.FC<SectorPieChartProps> = ({ holdings, getTopNData }) => {
-    const TOTAL = holdings.reduce((sum, row) => sum + (row.currentPrice * row.quantity), 0);
+    const { selectedSector, selectedAsset } = usePortfolio();
+
+    let TOTAL = holdings.reduce((sum, row) => sum + (row.currentPrice * row.quantity), 0);
+    if (selectedSector) {
+        TOTAL = holdings
+            .filter(row => row.sector === selectedSector)
+            .reduce((sum, row) => sum + (row.currentPrice * row.quantity), 0);
+    }
+
 
     const { setFilterModel } = useFilterModel();
     const handleSectorItemClick = (sector: string | null) => {
-        if(sector!=='Others') 
-            setFilterModel({items: [{
-                field: 'sector',
-                operator: 'is',
-                value: sector
-            }]});
-        else
+        if(selectedSector !== null) {
+            setFilterModel({items: [
+                {field: 'sector', operator: 'is', value: selectedSector}
+            ]});
+        } else if(sector!=='Others') {
+            setFilterModel({items: [
+                {field: 'sector', operator: 'is', value: sector}
+            ]});
+        } else {
             setFilterModel({items: []});
+        }
     };
 
     // --- Sector Summary (Group by sector) ---
@@ -34,7 +46,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({ holdings, getTopNData }
         return acc;
     }, {});
 
-    const sectorSummaryResult: DataFormatType[] = getTopNData(
+    let sectorSummaryResult: DataFormatType[] = getTopNData(
         Object.entries(sectorSummaryMap).map(([label, value]) => ({
             label,
             value: parseFloat(value.toFixed(2)),
@@ -42,9 +54,22 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({ holdings, getTopNData }
         3
     );
 
+    // If a sector is selected, filter the holdings to that sector
+    if (selectedSector!==null && selectedAsset!==null) {
+        sectorSummaryResult = holdings.filter(item => item.sector === selectedSector)
+            .reduce<DataFormatType[]>((acc, item) => {
+                acc.push({ label: item.asset, value: item.currentPrice * item.quantity });
+                return acc;
+            }, []);
+        const selectedAssetSummary = sectorSummaryResult.find(item => item.label === selectedAsset.name);
+        sectorSummaryResult = sectorSummaryResult.filter(item => item.label !== selectedAsset.name);
+        sectorSummaryResult = getTopNData(sectorSummaryResult, 3);
+        sectorSummaryResult = [selectedAssetSummary || { label: 'Others', value: 0 }, ...sectorSummaryResult];
+    }
+
     return (
         <PieChart
-            height={300}
+            height={335}
             series={[
                 {
                     data: sectorSummaryResult,
@@ -82,8 +107,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({ holdings, getTopNData }
             onItemClick={(event, identifier, item) => {
                 if(typeof item.label === 'string')
                     handleSectorItemClick(item.label);
-                }
-            }
+            }}
         />
     );
 };
