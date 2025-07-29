@@ -6,22 +6,28 @@ This project is a React application set up with Vite that supports Module Federa
 
 ``` text
 portfolio-overview
-├── src
-│   ├── components
-│   │   ├── context
-│   │   │   └── QuickSearchContext.tsx
-│   │   ├── holdingTable
-│   │   │   ├── HoldingToolbar.tsx
-│   │   │   └── PortfolioHoldingTable.tsx
-│   │   ├── pnl
-│   │   │   ├── PnLPerTrade.tsx
-│   │   │   └── PnLSummary.tsx
-│   │   └── RiskChart.tsx
-│   ├── data
-│   │   └── mockData.tsx
+├──src
 │   ├── App.tsx
 │   ├── main.tsx
-│   └── vite-env.d.ts
+│   ├── vite-env.d.ts
+│   ├── components/
+│   │   ├── context/
+│   │   │   ├── FilterModelContext.tsx
+│   │   │   ├── PortfolioContext.tsx
+│   │   │   └── ThemeModeContext.tsx
+│   │   ├── holdingTable/
+│   │   │   ├── HoldingToolbar.tsx
+│   │   │   └── PortfolioHoldingTable.tsx
+│   │   ├── pnl/
+│   │   │   └── PnLSummary.tsx
+│   │   ├── risk/
+│   │   │   ├── RiskChart.tsx
+│   │   │   └── charts/
+│   │   │       ├── AssetPieChart.tsx
+│   │   │       ├── HistoryPriceLineChart.tsx
+│   │   │       └── SectorPieChart.tsx
+│   ├── data/
+│       └── mockData.tsx
 ├── public
 │   └── index.html
 ├── package.json
