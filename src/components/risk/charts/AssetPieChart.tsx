@@ -18,7 +18,7 @@ const AssetPieChart: React.FC<AssetPieChartProps> = ({ holdings, getTopNData }) 
             label: row.asset,
             value: parseFloat((row.currentPrice * row.quantity).toFixed(2)),
         })),
-        3
+        4
     );
 
     return (
