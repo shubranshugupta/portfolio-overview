@@ -52,14 +52,14 @@ function App() {
                     </Grid>
 
                     <PortfolioProvider>
-                        <Grid container spacing={{ xs: 2, md: 3 }}>
+                        <Grid container spacing={{ xs: 2, md: 1 }}>
                             <Grid size={{ xs: 12 }}>
                                 <PortfolioHoldingsTable holdings={enrichedHoldings} />
                             </Grid>
-                            <Grid size={{ xs: 12, md: 5 }}>
+                            <Grid size={{ xs: 12, md: 6 }}>
                                 <PnLSummary holdings={enrichedHoldings} />
                             </Grid>
-                            <Grid size={{ xs: 12, md: 7 }}>
+                            <Grid size={{ xs: 12, md: 6 }}>
                                 <RiskChart holdings={enrichedHoldings} />
                             </Grid>
                         </Grid>

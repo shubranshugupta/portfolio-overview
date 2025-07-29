@@ -111,12 +111,12 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
             </Box>
 
             <Stack direction={{ xs: 'column', sm: 'row' }}
-                spacing={{ xs: 2 }}
+                spacing={{ xs: 2, md: 4 }}
                 alignItems="center"
                 justifyContent="center"
-                sx={{ m: 3 }}
+                sx={{ mt: 5 }}
             >
-                <Box display='flex' justifyContent='space-between' gap={2}>
+                <Box display='flex' justifyContent='space-between' gap={{ xs: 2, md: 4 }}>
                     <Paper
                         key={0}
                         elevation={2}
@@ -142,7 +142,7 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
                         </Typography>
                     </Paper>
                 </Box>
-                <Box display='flex' justifyContent='space-between' gap={2}>
+                <Box display='flex' justifyContent='space-between' gap={{ xs: 2, md: 4 }}>
                     <Paper
                         key={2}
                         elevation={2}
