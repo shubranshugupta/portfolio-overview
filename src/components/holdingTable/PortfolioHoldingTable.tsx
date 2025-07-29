@@ -161,7 +161,7 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
 
     return (
         <Paper elevation={3}
-            sx={{ padding: 2, marginBottom: 3 }}
+            sx={{ padding: 2, marginBottom: 1 }}
             square={false} >
             <Stack direction="row" spacing={2} sx={{ justifyContent: 'center', alignItems: 'center' }}>
                 <InsertChartRounded color="primary" sx={{ fontSize: 40 }} />
@@ -172,12 +172,13 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
             <Box sx={{ paddingY: 2 }}>
                 <DataGrid
                     rows={holdings}
+                    rowHeight={35}
                     columns={columns}
                     paginationModel={paginationModel}
                     onPaginationModelChange={setPaginationModel}
                     pageSizeOptions={[5, 10, 25, 50]}
                     showToolbar
-                    sx={{ height: 425 }}
+                    sx={{ height: 350 }}
                     slots={{ toolbar: HoldingToolbar }}
                     filterModel={filterModel}
                     onFilterModelChange={(model) => {setFilterModel(model)}}
