@@ -58,10 +58,10 @@ function App() {
                                 <Grid size={{ xs: 12 }}>
                                     <PortfolioHoldingsTable holdings={enrichedHoldings} />
                                 </Grid>
-                                <Grid size={{ xs: 12, md: 6 }}>
+                                <Grid size={{ xs: 12, md: 5 }}>
                                     <PnLSummary holdings={enrichedHoldings} />
                                 </Grid>
-                                <Grid size={{ xs: 12, md: 6 }}>
+                                <Grid size={{ xs: 12, md: 7 }}>
                                     <RiskChart holdings={enrichedHoldings} />
                                 </Grid>
                             </Grid>
