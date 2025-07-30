@@ -1,6 +1,6 @@
 import React from 'react';
 import { LineChart } from '@mui/x-charts';
-import { Tooltip, Button, ButtonGroup, Box } from '@mui/material';
+import { Tooltip, Button, ButtonGroup, Box, CardContent, ToggleButtonGroup, ToggleButton } from '@mui/material';
 
 import type { EnrichedHolding, PortfolioHistoryPrice } from '../../../data/mockData';
 import { valueFormatter, portfolioHoldingHistoryPrice } from '../../../data/mockData';
@@ -15,7 +15,7 @@ interface HistoryPriceLineChartProps {
 const HistoryPriceLineChart: React.FC<HistoryPriceLineChartProps> = ({ holdings, getTopNData }) => {
     const { selectedAsset } = usePortfolio();
     let isProfit = null;
-    const [periodLen, setPeriodLen] = React.useState(12);
+    const [periodLen, setPeriodLen] = React.useState<12 | 24>(12);
 
     const top3Asset: DataFormatType[] = getTopNData(
         holdings.map((row) => ({
@@ -43,8 +43,12 @@ const HistoryPriceLineChart: React.FC<HistoryPriceLineChartProps> = ({ holdings,
         }];
     }
 
+    const handleDurationChange = (_: any, newDuration: 12 | 24 | null) => {
+        if (newDuration) setPeriodLen(newDuration);
+    };
+
     return (
-        <>
+        <CardContent>
             <Box
                 sx={{
                     display: 'flex',
@@ -52,17 +56,16 @@ const HistoryPriceLineChart: React.FC<HistoryPriceLineChartProps> = ({ holdings,
                     alignItems: 'center',
                 }}
             >
-                <Tooltip title="Period">
-                    <ButtonGroup
-                        variant="outlined"
-                        color='warning'
-                        size="small"
-                        sx={{ margin: 0.5 }}
-                    >
-                        <Button onClick={() => setPeriodLen(12)}>12m</Button>
-                        <Button onClick={() => setPeriodLen(24)}>24m</Button>
-                    </ButtonGroup>
-                </Tooltip>
+                <ToggleButtonGroup
+                    value={periodLen}
+                    exclusive
+                    onChange={handleDurationChange}
+                    size="small"
+                    color='secondary'
+                >
+                    <ToggleButton value={12} sx={{ p: 0.5 }} color='secondary'>12M</ToggleButton>
+                    <ToggleButton value={24} sx={{ p: 0.5 }} color='secondary'>24M</ToggleButton>
+                </ToggleButtonGroup>
             </Box>
 
             <LineChart
@@ -98,7 +101,7 @@ const HistoryPriceLineChart: React.FC<HistoryPriceLineChartProps> = ({ holdings,
                 ]}
                 skipAnimation={true}
             />
-        </>
+        </CardContent>
     );
 }
 
