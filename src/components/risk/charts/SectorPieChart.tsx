@@ -69,7 +69,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({ holdings, getTopNData }
 
     return (
         <PieChart
-            height={335}
+            height={300}
             series={[
                 {
                     data: sectorSummaryResult,
