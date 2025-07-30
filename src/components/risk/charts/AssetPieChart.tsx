@@ -4,6 +4,8 @@ import { PieChart, legendClasses } from '@mui/x-charts';
 import type { EnrichedHolding } from '../../../data/mockData';
 import { valueFormatter } from '../../../data/mockData';
 import { DataFormatType } from '../RiskChart';
+import { useFilterModel } from '../../context/FilterModelContext';
+import { usePortfolio } from '../../context/PortfolioContext';
 
 interface AssetPieChartProps {
     holdings: EnrichedHolding[];
@@ -18,8 +20,22 @@ const AssetPieChart: React.FC<AssetPieChartProps> = ({ holdings, getTopNData }) 
             label: row.asset,
             value: parseFloat((row.currentPrice * row.quantity).toFixed(2)),
         })),
-        4
+        9
     );
+
+    const { setFilterModel } = useFilterModel();
+    const { selectedAsset } = usePortfolio();
+    const handleSectorItemClick = (asset: string | null) => {
+        if(selectedAsset !== null) {
+            return null;
+        } else if(asset!=='Others') {
+            setFilterModel({items: [
+                {field: 'asset', operator: 'equals', value: asset}
+            ]});
+        } else {
+            setFilterModel({items: []});
+        }
+    };
 
     return (
         <PieChart
@@ -58,7 +74,10 @@ const AssetPieChart: React.FC<AssetPieChartProps> = ({ holdings, getTopNData }) 
                     },
                 }
             }}
-            onItemClick={(event, identifier, item) => {null}}
+            onItemClick={(event, identifier, item) => {
+                if(typeof item.label === 'string')
+                    handleSectorItemClick(item.label);
+            }}
         />
     );
 }
