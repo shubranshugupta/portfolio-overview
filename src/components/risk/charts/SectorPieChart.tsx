@@ -69,16 +69,16 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({ holdings, getTopNData }
 
     return (
         <PieChart
-            height={280}
+            height={230}
             series={[
                 {
                     data: sectorSummaryResult,
-                    innerRadius: 50,
-                    outerRadius: 120,
+                    innerRadius: 25,
+                    outerRadius: 100,
                     paddingAngle: 1,
                     cornerRadius: 3,
                     highlightScope: { fade: 'global', highlight: 'item' },
-                    faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
+                    faded: { innerRadius: 20, additionalRadius: -20, color: 'gray' },
                     valueFormatter: (value) => {
                         const percent = (value.value/TOTAL)*100;
                         return `${valueFormatter(value)} (${percent.toFixed(1)}%)`
@@ -93,10 +93,10 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({ holdings, getTopNData }
                         horizontal: 'center',
                     },
                     sx: {
-                        gap: '14px',
+                         gap: '10px',
                         [`.${legendClasses.mark}`]: {
-                            height: 14,
-                            width: 14,
+                            height: 10,
+                            width: 10,
                         },
                         '.MuiChartsLegend-series': {
                             gap: '9px',

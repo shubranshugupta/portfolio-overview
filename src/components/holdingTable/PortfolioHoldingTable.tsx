@@ -30,10 +30,10 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
     const handleOnclick = (asset: String) => {
         const selected = holdings.find(h => h.asset === asset);
         if (selected) {
-            setSelectedAsset({ 
-                id: selected.id, 
-                name: selected.asset, 
-                sector: selected.sector 
+            setSelectedAsset({
+                id: selected.id,
+                name: selected.asset,
+                sector: selected.sector
             });
             setSelectedSector(selected.sector);
         }
@@ -42,7 +42,7 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
     const columns: GridColDef<EnrichedHolding>[] = [
         {
             field: 'id',
-            minWidth: 90,
+            minWidth: 80,
             flex: 0.5,
             type: 'number',
             headerName: 'Id',
@@ -60,7 +60,7 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
                 <strong>{'Asset'}</strong>
             ),
             renderCell: (params: GridRenderCellParams<any, String>) => (
-                <Box onClick={() => handleOnclick(params.value as String)} 
+                <Box onClick={() => handleOnclick(params.value as String)}
                     onMouseOver={(e) => {
                         e.currentTarget.style.cursor = 'pointer';
                         e.currentTarget.style.color = '#2a75c0e1';
@@ -74,7 +74,7 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
             ),
             getApplyQuickFilterFn: (value: string) => {
                 return (cellValue) => {
-                    if(typeof cellValue === 'string')
+                    if (typeof cellValue === 'string')
                         return cellValue.toLowerCase().startsWith(value.toLowerCase());
                     return false;
                 }
@@ -105,7 +105,7 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
         },
         {
             field: 'avgBuyPrice',
-            minWidth: 200,
+            minWidth: 150,
             flex: 1.5,
             type: 'number',
             headerName: 'Avg Buy Price',
@@ -116,7 +116,7 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
         },
         {
             field: 'currentPrice',
-            minWidth: 200,
+            minWidth: 150,
             flex: 1.5,
             type: 'number',
             headerName: 'Current Price',
@@ -127,7 +127,7 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
         },
         {
             field: 'stockValue',
-            minWidth: 200,
+            minWidth: 150,
             flex: 1.5,
             type: 'number',
             headerName: 'Current Value',
@@ -139,7 +139,7 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
         {
             field: 'pnl',
             minWidth: 100,
-            flex:1,
+            flex: 1,
             headerName: 'PnL',
             renderCell: (params: GridRenderCellParams<EnrichedHolding, number>) => (
                 <span style={{ color: params.value ? params.value >= 0 ? 'green' : 'red' : 'green' }}>
@@ -161,7 +161,7 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
 
     return (
         <Paper elevation={3}
-            sx={{ padding: 2, marginBottom: 1 }}
+            sx={{ padding: 1, marginBottom: 1 }}
             square={false} >
             <Stack direction="row" spacing={2} sx={{ justifyContent: 'center', alignItems: 'center' }}>
                 <InsertChartRounded color="primary" sx={{ fontSize: 40 }} />
@@ -169,19 +169,22 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
                     Portfolio Holdings
                 </Typography>
             </Stack>
-            <Box sx={{ paddingY: 2 }}>
+            <Box sx={{ paddingY: 1 }}>
                 <DataGrid
                     rows={holdings}
-                    rowHeight={35}
+                    rowHeight={38}
                     columns={columns}
                     paginationModel={paginationModel}
                     onPaginationModelChange={setPaginationModel}
                     pageSizeOptions={[15, 25, 50, 100]}
                     showToolbar
-                    sx={{ height: 690 }}
+                    sx={{ height: 750 }}
                     slots={{ toolbar: HoldingToolbar }}
                     filterModel={filterModel}
-                    onFilterModelChange={(model) => {setFilterModel(model)}}
+                    onFilterModelChange={(model) => { setFilterModel(model) }}
+                    columnVisibilityModel={{
+                        sector: false,
+                    }}
                 />
             </Box>
         </Paper>

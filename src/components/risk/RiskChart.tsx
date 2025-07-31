@@ -35,7 +35,7 @@ function CustomTabPanel(props: TabPanelProps) {
             id={`simple-tabpanel-${index}`}
             aria-labelledby={`simple-tab-${index}`}
             {...other}
-            minHeight={345}
+            minHeight={330}
         >
             {value === index && children}
         </Box>
@@ -76,7 +76,7 @@ const RiskChart: React.FC<RiskChartProps> = ({ holdings }) => {
 
     return (
         <Paper elevation={3} sx={{ padding: 1, width: '100%' }}>
-            <Stack direction="row" spacing={2} sx={{ justifyContent: 'center', alignItems: 'center', mb: 2 }}>
+            <Stack direction="row" spacing={2} sx={{ justifyContent: 'center', alignItems: 'center', mb: 1 }}>
                 <PieChartRounded color="primary" sx={{ fontSize: 40 }} />
                 <Typography variant="h5" gutterBottom>
                     Risk Overview
@@ -93,12 +93,18 @@ const RiskChart: React.FC<RiskChartProps> = ({ holdings }) => {
                         variant="scrollable"
                         scrollButtons="auto"
                     >
-                        <Tab label={`${selectedSector? selectedSector:""} Sector Exposure`} {...a11yProps(0)} />
-                        <Tab label={`${selectedAsset ? selectedAsset.name+" Performance":"Asset Exposure"}`} 
-                            {...a11yProps(1)} 
+                        <Tab 
+                            label={`${selectedSector? selectedSector:""} Sector Exposure`} 
+                            {...a11yProps(0)}  
+                            sx={{ p:1 }}
+                        />
+                        <Tab 
+                            label={`${selectedAsset ? selectedAsset.name+" Performance":"Asset Exposure"}`} 
+                            {...a11yProps(1)}
+                            sx={{ p:1 }} 
                         />
                         {!selectedSector && (
-                            <Tab label='Top 3 Holdings Performance' {...a11yProps(2)} />
+                            <Tab label='Top 3 Holdings Performance' {...a11yProps(2)} sx={{ p:1 }}/>
                         )}
                     </Tabs>
                 </Box>

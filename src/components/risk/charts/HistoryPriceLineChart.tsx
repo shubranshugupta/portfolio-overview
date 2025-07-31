@@ -48,7 +48,7 @@ const HistoryPriceLineChart: React.FC<HistoryPriceLineChartProps> = ({ holdings,
     };
 
     return (
-        <CardContent>
+        <CardContent sx={{ margin:0, padding:0, pt:0.5 }}>
             <Box
                 sx={{
                     display: 'flex',

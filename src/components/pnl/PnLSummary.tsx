@@ -39,7 +39,7 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
         : (isProfit ? "#e8f5e9" : "#ffebee");
 
     return (
-        <Paper elevation={3} sx={{ padding: 2, width: '100%' }}>
+        <Paper elevation={3} sx={{ padding: 1, width: '100%' }}>
             <Stack direction="row" spacing={2} sx={{ justifyContent: 'center', alignItems: 'center' }}>
                 <ShowChartRounded color="primary" sx={{ fontSize: 40 }} />
                 <Typography variant="h5" gutterBottom>
@@ -110,13 +110,13 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
                 </Box>
             </Box>
 
-            <Stack direction={{ xs: 'row' }}
+            <Stack direction={{ xs: 'column' }}
                 spacing={{ xs: 1 }}
                 alignItems="center"
                 justifyContent="center"
-                sx={{ mt: 2 }}
+                sx={{ mt: 2, mb: 1 }}
             >
-                <Box display='flex' justifyContent='space-between' gap={{ xs: 1 }}>
+                <Box display='flex' justifyContent='space-between' gap={{ xs: 2 }}>
                     <Paper
                         key={0}
                         elevation={2}
@@ -125,7 +125,7 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
                         <Typography variant="caption" color="textSecondary">
                             Total Invested
                         </Typography>
-                        <Typography variant="subtitle1" fontWeight={600} color='inherit'>
+                        <Typography variant="subtitle2" fontWeight={600} color='inherit'>
                             {`₹${invested.toLocaleString()}`}
                         </Typography>
                     </Paper>
@@ -137,12 +137,12 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
                         <Typography variant="caption" color="textSecondary">
                             Current Value
                         </Typography>
-                        <Typography variant="subtitle1" fontWeight={600} color='inherit'>
+                        <Typography variant="subtitle2" fontWeight={600} color='inherit'>
                             {`₹${current.toLocaleString()}`}
                         </Typography>
                     </Paper>
                 </Box>
-                <Box display='flex' justifyContent='space-between' gap={{ xs: 1 }}>
+                <Box display='flex' justifyContent='space-between' gap={{ xs: 2 }}>
                     <Paper
                         key={2}
                         elevation={2}
@@ -151,7 +151,7 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
                         <Typography variant="caption" color="textSecondary">
                             Net P&L
                         </Typography>
-                        <Typography variant="subtitle1" fontWeight={600} color={isProfit ? "green" : "red"}>
+                        <Typography variant="subtitle2" fontWeight={600} color={isProfit ? "green" : "red"}>
                             {isProfit?"+":"-"}{`₹${Math.abs(gain).toLocaleString()}`}
                         </Typography>
                     </Paper>
@@ -163,7 +163,7 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
                         <Typography variant="caption" color="textSecondary">
                             Return %
                         </Typography>
-                        <Typography variant="subtitle1" fontWeight={600} color={isProfit ? "green" : "red"}>
+                        <Typography variant="subtitle2" fontWeight={600} color={isProfit ? "green" : "red"}>
                             {isProfit?"+":"-"}{`${Math.abs(gainPercent).toFixed(1)}%`}
                         </Typography>
                     </Paper>
