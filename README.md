@@ -27,7 +27,7 @@ portfolio-overview
 │   │   │       ├── HistoryPriceLineChart.tsx
 │   │   │       └── SectorPieChart.tsx
 │   ├── data/
-│       └── mockData.tsx
+│   |   └── mockData.tsx
 ├── public
 │   └── index.html
 ├── package.json
@@ -61,6 +61,7 @@ portfolio-overview
    Navigate to `http://localhost:3000` to see the application in action.
 
 ## Usage
+<img src="./public/WebImg.png" width="600" height="339">
 
 The `App` is a simple React component that has been exposed for use in a microfrontend architecture. You can import and use this component in other applications that support Module Federation.
 
