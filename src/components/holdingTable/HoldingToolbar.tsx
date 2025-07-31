@@ -91,7 +91,7 @@ const HoldingToolbar: React.FC = () => {
                     onClick={() => {
                         apiRef.current.setFilterModel({ items: [] });
                         apiRef.current.setSortModel([]);
-                        apiRef.current.setPaginationModel({ page: 0, pageSize: 5 });
+                        apiRef.current.setPaginationModel({ page: 0, pageSize: 15 });
                         setSelectedAsset(null);
                         setSelectedSector(null);
                     }}

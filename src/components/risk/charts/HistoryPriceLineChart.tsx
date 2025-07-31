@@ -69,7 +69,7 @@ const HistoryPriceLineChart: React.FC<HistoryPriceLineChartProps> = ({ holdings,
             </Box>
 
             <LineChart
-                height={300}
+                height={240}
                 series={
                     assetHistory.slice(0, 3).map((hold) => ({
                         data: hold.history.price.slice(-periodLen),
@@ -86,8 +86,8 @@ const HistoryPriceLineChart: React.FC<HistoryPriceLineChartProps> = ({ holdings,
                         year: '2-digit'
                     })
                 }]}
-                yAxis={[{ width: 50 }]}
-                margin={{ right: 24 }}
+                // yAxis={[{ width: 50 }]}
+                // margin={{ right: 24 }}
                 slotProps={{
                     legend: {
                         direction: 'horizontal',

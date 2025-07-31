@@ -55,14 +55,14 @@ function App() {
                     <PortfolioProvider>
                         <FilterModelProvider>
                             <Grid container spacing={{ xs: 2, md: 1 }}>
-                                <Grid size={{ xs: 12 }}>
+                                <Grid size={{ xs: 12, md: 4 }}>
+                                    <Stack spacing={1.5}>
+                                        <PnLSummary holdings={enrichedHoldings} />
+                                        <RiskChart holdings={enrichedHoldings} />
+                                    </Stack>
+                                </Grid>
+                                <Grid size={{ xs: 8 }}>
                                     <PortfolioHoldingsTable holdings={enrichedHoldings} />
-                                </Grid>
-                                <Grid size={{ xs: 12, md: 5 }}>
-                                    <PnLSummary holdings={enrichedHoldings} />
-                                </Grid>
-                                <Grid size={{ xs: 12, md: 7 }}>
-                                    <RiskChart holdings={enrichedHoldings} />
                                 </Grid>
                             </Grid>
                         </FilterModelProvider>

@@ -39,7 +39,7 @@ const AssetPieChart: React.FC<AssetPieChartProps> = ({ holdings, getTopNData }) 
 
     return (
         <PieChart
-            height={300}
+            height={280}
             series={[
                 {
                     data: assetSummaryResult,

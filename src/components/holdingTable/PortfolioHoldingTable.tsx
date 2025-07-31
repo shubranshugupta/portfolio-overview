@@ -155,7 +155,7 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
     ];
 
     const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
-        pageSize: 5,
+        pageSize: 15,
         page: 0,
     });
 
@@ -176,9 +176,9 @@ const PortfolioHoldingsTable: React.FC<PortfolioHoldingProps> = ({
                     columns={columns}
                     paginationModel={paginationModel}
                     onPaginationModelChange={setPaginationModel}
-                    pageSizeOptions={[5, 10, 25, 50]}
+                    pageSizeOptions={[15, 25, 50, 100]}
                     showToolbar
-                    sx={{ height: 350 }}
+                    sx={{ height: 690 }}
                     slots={{ toolbar: HoldingToolbar }}
                     filterModel={filterModel}
                     onFilterModelChange={(model) => {setFilterModel(model)}}

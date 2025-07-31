@@ -39,7 +39,7 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
         : (isProfit ? "#e8f5e9" : "#ffebee");
 
     return (
-        <Paper elevation={3} sx={{ padding: 2, width: '100%', minHeight: 500 }}>
+        <Paper elevation={3} sx={{ padding: 2, width: '100%' }}>
             <Stack direction="row" spacing={2} sx={{ justifyContent: 'center', alignItems: 'center' }}>
                 <ShowChartRounded color="primary" sx={{ fontSize: 40 }} />
                 <Typography variant="h5" gutterBottom>
@@ -49,7 +49,7 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
 
             {/* Investment vs Current bar */}
             <Box sx={{ mt: 1 }}>
-                <Typography variant="body2" gutterBottom>
+                <Typography variant="body1" gutterBottom>
                     Investment vs Current
                 </Typography>
 
@@ -83,7 +83,7 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
             </Box>
 
             {/* Profit / Loss Badge */}
-            <Box sx={{ mt: 2, textAlign: "center" }}>
+            <Box sx={{ mt: 1, textAlign: "center" }}>
                 <Box
                     sx={{
                         display: "inline-block",
@@ -110,17 +110,17 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
                 </Box>
             </Box>
 
-            <Stack direction={{ xs: 'column', sm: 'row' }}
-                spacing={{ xs: 2, md: 4 }}
+            <Stack direction={{ xs: 'row' }}
+                spacing={{ xs: 1 }}
                 alignItems="center"
                 justifyContent="center"
-                sx={{ mt: 5 }}
+                sx={{ mt: 2 }}
             >
-                <Box display='flex' justifyContent='space-between' gap={{ xs: 2, md: 4 }}>
+                <Box display='flex' justifyContent='space-between' gap={{ xs: 1 }}>
                     <Paper
                         key={0}
                         elevation={2}
-                        sx={{ textAlign: "center", p: 2, minWidth: 125}}
+                        sx={{ textAlign: "center", p: 1, minWidth: 130}}
                     >
                         <Typography variant="caption" color="textSecondary">
                             Total Invested
@@ -132,7 +132,7 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
                     <Paper
                         key={1}
                         elevation={2}
-                        sx={{ textAlign: "center", p: 2, minWidth: 125}}
+                        sx={{ textAlign: "center", p: 1, minWidth: 130}}
                     >
                         <Typography variant="caption" color="textSecondary">
                             Current Value
@@ -142,11 +142,11 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
                         </Typography>
                     </Paper>
                 </Box>
-                <Box display='flex' justifyContent='space-between' gap={{ xs: 2, md: 4 }}>
+                <Box display='flex' justifyContent='space-between' gap={{ xs: 1 }}>
                     <Paper
                         key={2}
                         elevation={2}
-                        sx={{ textAlign: "center", p: 2, minWidth: 125}}
+                        sx={{ textAlign: "center", p: 1, minWidth: 130}}
                     >
                         <Typography variant="caption" color="textSecondary">
                             Net P&L
@@ -158,7 +158,7 @@ const PnLSummary: React.FC<PnLSummaryProps> = ({ holdings }) => {
                     <Paper
                         key={3}
                         elevation={2}
-                        sx={{ textAlign: "center", p: 2, minWidth: 125}}
+                        sx={{ textAlign: "center", p: 1, minWidth: 130}}
                     >
                         <Typography variant="caption" color="textSecondary">
                             Return %

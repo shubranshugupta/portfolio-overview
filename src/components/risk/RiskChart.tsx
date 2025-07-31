@@ -34,8 +34,8 @@ function CustomTabPanel(props: TabPanelProps) {
             hidden={value !== index}
             id={`simple-tabpanel-${index}`}
             aria-labelledby={`simple-tab-${index}`}
-            height={365}
             {...other}
+            minHeight={345}
         >
             {value === index && children}
         </Box>
@@ -75,7 +75,7 @@ const RiskChart: React.FC<RiskChartProps> = ({ holdings }) => {
     const { selectedAsset, selectedSector } = usePortfolio();
 
     return (
-        <Paper elevation={3} sx={{ padding: 2, width: '100%', minHeight: 420 }}>
+        <Paper elevation={3} sx={{ padding: 1, width: '100%' }}>
             <Stack direction="row" spacing={2} sx={{ justifyContent: 'center', alignItems: 'center', mb: 2 }}>
                 <PieChartRounded color="primary" sx={{ fontSize: 40 }} />
                 <Typography variant="h5" gutterBottom>
