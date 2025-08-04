@@ -38,11 +38,11 @@ function App() {
         <div className="App">
             <ThemeProvider theme={theme}>
                 <CssBaseline />
-                <Box sx={{ padding: 1, marginBottom: 3 }}>
+                <Box sx={{ padding: 1, marginBottom: 3}}>
                     <Grid container spacing={1} sx={{ padding: 1 }}>
                         <Grid size={{ xs: 11 }} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <Typography variant="h4" gutterBottom>
-                                Portfolio & Risk Dashboard
+                                PORTFOLIO & RISK DASHBOARD
                             </Typography>
                         </Grid>
                         <Grid size={{ xs: 1 }} sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -55,15 +55,15 @@ function App() {
                     <PortfolioProvider>
                         <FilterModelProvider>
                             <Grid container spacing={{ xs: 2, md: 1 }}>
-                                <Grid size={{ xs: 12, md: 4 }}>
-                                    <Stack spacing={1.5}>
-                                        <PnLSummary holdings={enrichedHoldings} />
-                                        <RiskChart holdings={enrichedHoldings} />
-                                    </Stack>
-                                </Grid>
                                 <Grid size={{ xs: 8 }}>
                                     <PortfolioHoldingsTable holdings={enrichedHoldings} />
                                 </Grid>
+                                <Grid size={{ xs: 12, md: 4 }}>
+                                    <Stack spacing={1}>  
+                                        <RiskChart holdings={enrichedHoldings} />
+                                        <PnLSummary holdings={enrichedHoldings} />
+                                    </Stack>
+                                </Grid>                               
                             </Grid>
                         </FilterModelProvider>
                     </PortfolioProvider>
