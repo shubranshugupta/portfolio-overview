@@ -59,7 +59,7 @@ function App() {
                                     <PortfolioHoldingsTable holdings={enrichedHoldings} />
                                 </Grid>
                                 <Grid size={{ xs: 12, md: 4 }}>
-                                    <Stack spacing={1}>  
+                                    <Stack spacing={3} marginTop={2} marginRight={2}>  
                                         <RiskChart holdings={enrichedHoldings} />
                                         <PnLSummary holdings={enrichedHoldings} />
                                     </Stack>
